@@ -1,0 +1,27 @@
+{
+  "name": "color-helper",
+  "version": "1.0.0",
+  "description": "颜色解析",
+  "main": "src/parseColor.ts",
+  "type": "module",
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "keywords": [
+    "color",
+    "parseColor"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.22.20",
+    "@babel/preset-env": "^7.22.20",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-strip": "^3.0.2",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "tslib": "^2.6.2"
+  }
+}
