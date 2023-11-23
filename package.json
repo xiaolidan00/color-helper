@@ -1,5 +1,5 @@
 {
-  "name": "color-helper",
+  "name": "xcolor-helper",
   "version": "1.0.0",
   "description": "颜色解析",
   "main": "src/parseColor.ts",
@@ -11,7 +11,12 @@
     "color",
     "parseColor"
   ],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiaolidan00/color-helper.git"
+  },
+  "homepage": "https://github.com/xiaolidan00/color-helper",
+  "author": "xiaolidan00",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.22.20",
