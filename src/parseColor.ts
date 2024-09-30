@@ -93,14 +93,14 @@ export function getColor(color: string): ColorResultType {
     result = '#FFFFFF',
     alpha = 100;
   if (color && typeof color == 'string') {
-    if (color.indexOf('rgba(') == 0 && color.match(/(,)/g).length == 3) {
+    if (color.indexOf('rgba(') == 0 && color.match(/(,)/g)?.length == 3) {
       let value = color.slice(5, color.length - 1).split(',');
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
       blue = parseInt(trimStr(value[2]));
       alpha = parseFloat(trimStr(value[3])) * 100;
       result = '#' + to16(red) + to16(green) + to16(blue);
-    } else if (color.indexOf('rgb(') == 0 && color.match(/(,)/g).length == 2) {
+    } else if (color.indexOf('rgb(') == 0 && color.match(/(,)/g)?.length == 2) {
       let value = color.slice(4, color.length - 1).split(',');
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
