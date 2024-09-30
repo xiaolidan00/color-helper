@@ -1,6 +1,6 @@
 {
   "name": "xcolor-helper",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "颜色解析",
   "main": "src/parseColor.ts",
   "type": "module",
