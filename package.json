@@ -1,6 +1,6 @@
 {
   "name": "xcolor-helper",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "颜色解析",
   "main": "src/parseColor.ts",
   "type": "module",
@@ -27,6 +27,8 @@
     "@rollup/plugin-strip": "^3.0.2",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.5",
-    "tslib": "^2.6.2"
+    "rollup": "^4.22.5",
+    "tslib": "^2.6.2",
+    "typescript": "^5.6.2"
   }
 }
