@@ -1,17 +1,16 @@
 import colorname from './colorname';
 
+const HEXLETTER = {
+  A: 10,
+  B: 11,
+  C: 12,
+  D: 13,
+  E: 14,
+  F: 15
+};
 //转化为10进制
 export function get16(value: string) {
-  if (value.match(/[0-9ABCDEF]{2}/g)) {
-    let letter = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-    let shi: number | string = value[0];
-    let ge: number | string = value[1];
-    shi = 16 * letter.findIndex((el) => el == shi);
-    ge = letter.findIndex((el) => el == ge);
-    return shi + ge;
-  } else {
-    return 0;
-  }
+  return parseInt(value, 16);
 }
 //转化为16位进制
 export function to16(vv: number): string {
@@ -38,44 +37,6 @@ export function to16(vv: number): string {
   }
   return '00';
 }
-//解析#XXXXXX颜色
-export function parseResultColor(val: string) {
-  let color = val.toUpperCase();
-  let value = '';
-  if (color.length == 7) {
-    value = color.slice(1);
-  } else if (color.length == 4) {
-    value =
-      color.slice(1, 2) +
-      color.slice(1, 2) +
-      color.slice(2, 3) +
-      color.slice(2, 3) +
-      color.slice(3) +
-      color.slice(3);
-  } else if (color.length == 3) {
-    value =
-      color.slice(1, 2) +
-      color.slice(1, 2) +
-      color.slice(1, 2) +
-      color.slice(2, 3) +
-      color.slice(2, 3) +
-      color.slice(2, 3);
-  }
-  if (value.length == 6) {
-    let red = get16(value.slice(0, 2));
-    let green = get16(value.slice(2, 4));
-    let blue = get16(value.slice(4, 6));
-    return { red, green, blue, result: '#' + value };
-  } else {
-    return { red: 255, green: 255, blue: 255, result: '#FFFFFF' };
-  }
-}
-function trimStr(str: string) {
-  if (str) {
-    return str.replace(/\s/g, '');
-  }
-  return str;
-}
 export interface ColorResultType {
   red: number;
   green: number;
@@ -84,6 +45,50 @@ export interface ColorResultType {
   alpha: number;
   rgba: string;
 }
+//解析#XXXXXX颜色
+export function parseHexColor(val: string): ColorResultType {
+  let color = val.toUpperCase();
+  let value = '';
+  let alpha = 1;
+  if (color.length === 7) {
+    value = color.substring(1);
+  } else if (color.length === 4) {
+    value = color[1] + color[1] + color[2] + color[2] + color[3] + color[3];
+  } else if (color.length === 3) {
+    value = color[1] + color[1] + color[1] + color[2] + color[2] + color[2];
+  } else if (color.length === 9) {
+    value = color.substring(1, 7);
+    alpha = get16(value.substring(7, 9)) / 255;
+  }
+  if (value.length == 6) {
+    let red = get16(value.substring(0, 2));
+    let green = get16(value.substring(2, 4));
+    let blue = get16(value.substring(4, 6));
+    return {
+      red,
+      green,
+      blue,
+      result: '#' + value,
+      alpha,
+      rgba: `rgba(${red},${green},${blue},${alpha})`
+    };
+  } else {
+    return {
+      red: 255,
+      green: 255,
+      blue: 255,
+      result: '#FFFFFF',
+      alpha: 1,
+      rgba: `rgba(255,255,255,1)`
+    };
+  }
+}
+function trimStr(str: string) {
+  if (str) {
+    return str.replace(/\s/g, '');
+  }
+  return str;
+}
 
 //解析颜色
 export function getColor(color: string): ColorResultType {
@@ -91,50 +96,33 @@ export function getColor(color: string): ColorResultType {
     green = 255,
     blue = 255,
     result = '#FFFFFF',
-    alpha = 100;
+    alpha = 1;
   if (color && typeof color == 'string') {
-    if (color.indexOf('rgba(') == 0 && color.match(/(,)/g)?.length == 3) {
-      let value = color.slice(5, color.length - 1).split(',');
+    if (/^rgba\(\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9\.]+\s*\)$/.test(color)) {
+      const value = color.substring(5, color.length - 1).split(',');
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
       blue = parseInt(trimStr(value[2]));
-      alpha = parseFloat(trimStr(value[3])) * 100;
+      alpha = Number(trimStr(value[3]));
       result = '#' + to16(red) + to16(green) + to16(blue);
-    } else if (color.indexOf('rgb(') == 0 && color.match(/(,)/g)?.length == 2) {
-      let value = color.slice(4, color.length - 1).split(',');
+    } else if (/^rgb\(\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*\)$/.test(color)) {
+      const value = color.substring(4, color.length - 1).split(',');
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
       blue = parseInt(trimStr(value[2]));
       result = '#' + to16(red) + to16(green) + to16(blue);
-    } else if (color.indexOf('(') >= 0 && color.indexOf(')') >= 0) {
-      let v = color.substring(color.indexOf('(') + 1, color.indexOf(')'));
-      let a = v.split(',');
-      if (a.length == 3) {
-        red = parseInt(trimStr(a[0]));
-        green = parseInt(trimStr(a[1]));
-        blue = parseInt(trimStr(a[2]));
-        result = '#' + to16(red) + to16(green) + to16(blue);
-      } else if (a.length == 4) {
-        red = parseInt(trimStr(a[0]));
-        green = parseInt(trimStr(a[1]));
-        blue = parseInt(trimStr(a[2]));
-        alpha = parseFloat(trimStr(a[3])) * 100;
-        result = '#' + to16(red) + to16(green) + to16(blue);
-      }
-    } else if (color.indexOf('#') == 0) {
-      let r = parseResultColor(color);
-      red = r.red;
-      green = r.green;
-      blue = r.blue;
-      result = r.result;
+    } else if (
+      /^#[0-9a-fA-F]{6}$/.test(color) ||
+      /^#[0-9a-fA-F]{3}$/.test(color) ||
+      /^#[0-9a-fA-F]{8}$/.test(color) ||
+      /^#[0-9a-fA-F]{2}$/.test(color)
+    ) {
+      return parseHexColor(color);
     } else if (color.match(/^[a-zA-Z]+$/)) {
-      let c = colorname.find((item) => item.name == color);
+      const cc = color.toLowerCase();
+      const c = colorname.find((item) => item.name == cc);
       if (c) {
-        let r = parseResultColor(c.value);
-        red = r.red;
-        green = r.green;
-        blue = r.blue;
-        result = r.result;
+        return parseHexColor(c.value);
       }
     }
   }
@@ -144,8 +132,8 @@ export function getColor(color: string): ColorResultType {
     green,
     blue,
     result,
-    alpha: alpha >= 0 && alpha <= 100 ? alpha : 100,
-    rgba: `rgba(${red},${green},${blue},${alpha * 0.01})`
+    alpha: alpha >= 0 && alpha <= 1 ? alpha : 1,
+    rgba: `rgba(${red},${green},${blue},${alpha})`
   };
 }
 
