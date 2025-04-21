@@ -1,4 +1,4 @@
-import colorname from './colorname';
+import colorname from "./colorname";
 
 const HEXLETTER = {
   A: 10,
@@ -8,34 +8,39 @@ const HEXLETTER = {
   E: 14,
   F: 15
 };
+const LETTERHEX = {
+  10: "A",
+  11: "B",
+  12: "C",
+  14: "E",
+  15: "F"
+};
 //转化为10进制
 export function get16(value: string) {
   return parseInt(value, 16);
 }
 //转化为16位进制
-export function to16(vv: number): string {
-  let value = parseInt(vv + '');
+export function to16(value: number): string {
   if (value >= 0 && value <= 255) {
-    let letter = ['A', 'B', 'C', 'D', 'E', 'F'];
     if (value <= 9) {
-      return '0' + value;
+      return "0" + value;
     } else if (value > 9 && value < 16) {
-      return '0' + letter[value - 10];
+      return "0" + LETTERHEX[value as keyof typeof LETTERHEX];
     } else if (value >= 16) {
       let shi: number | string = parseInt((value / 16).toFixed(0));
       let ge: number | string = value % 16;
 
       if (shi > 9 && shi < 16) {
-        shi = letter[shi - 10];
+        shi = LETTERHEX[shi as keyof typeof LETTERHEX];
       }
       if (ge <= 9) {
-        return shi + '' + ge;
+        return `${shi}${ge}`;
       } else if (ge > 9 && ge < 16) {
-        return shi + '' + letter[ge - 10];
+        return `${shi}${LETTERHEX[ge as keyof typeof LETTERHEX]}`;
       }
     }
   }
-  return '00';
+  return "00";
 }
 export interface ColorResultType {
   red: number;
@@ -48,7 +53,7 @@ export interface ColorResultType {
 //解析#XXXXXX颜色
 export function parseHexColor(val: string): ColorResultType {
   let color = val.toUpperCase();
-  let value = '';
+  let value = "";
   let alpha = 1;
   if (color.length === 7) {
     value = color.substring(1);
@@ -68,7 +73,7 @@ export function parseHexColor(val: string): ColorResultType {
       red,
       green,
       blue,
-      result: '#' + value,
+      result: "#" + value,
       alpha,
       rgba: `rgba(${red},${green},${blue},${alpha})`
     };
@@ -77,7 +82,7 @@ export function parseHexColor(val: string): ColorResultType {
       red: 255,
       green: 255,
       blue: 255,
-      result: '#FFFFFF',
+      result: "#FFFFFF",
       alpha: 1,
       rgba: `rgba(255,255,255,1)`
     };
@@ -85,7 +90,7 @@ export function parseHexColor(val: string): ColorResultType {
 }
 function trimStr(str: string) {
   if (str) {
-    return str.replace(/\s/g, '');
+    return str.replace(/\s/g, "");
   }
   return str;
 }
@@ -95,22 +100,22 @@ export function getColor(color: string): ColorResultType {
   let red = 255,
     green = 255,
     blue = 255,
-    result = '#FFFFFF',
+    result = "#FFFFFF",
     alpha = 1;
-  if (color && typeof color == 'string') {
+  if (color && typeof color == "string") {
     if (/^rgba\(\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9\.]+\s*\)$/.test(color)) {
-      const value = color.substring(5, color.length - 1).split(',');
+      const value = color.substring(5, color.length - 1).split(",");
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
       blue = parseInt(trimStr(value[2]));
       alpha = Number(trimStr(value[3]));
-      result = '#' + to16(red) + to16(green) + to16(blue);
+      result = "#" + to16(red) + to16(green) + to16(blue);
     } else if (/^rgb\(\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*,\s*[0-9]{1,3}\s*\)$/.test(color)) {
-      const value = color.substring(4, color.length - 1).split(',');
+      const value = color.substring(4, color.length - 1).split(",");
       red = parseInt(trimStr(value[0]));
       green = parseInt(trimStr(value[1]));
       blue = parseInt(trimStr(value[2]));
-      result = '#' + to16(red) + to16(green) + to16(blue);
+      result = "#" + to16(red) + to16(green) + to16(blue);
     } else if (
       /^#[0-9a-fA-F]{6}$/.test(color) ||
       /^#[0-9a-fA-F]{3}$/.test(color) ||
@@ -138,8 +143,8 @@ export function getColor(color: string): ColorResultType {
 }
 
 export function getGadientArray(startColor: string, endColor: string, step: number): string[] {
-  let { red: startR, green: startG, blue: startB } = getColor(startColor);
-  let { red: endR, green: endG, blue: endB } = getColor(endColor);
+  let {red: startR, green: startG, blue: startB} = getColor(startColor);
+  let {red: endR, green: endG, blue: endB} = getColor(endColor);
 
   let sR = (endR - startR) / step; //总差值
   let sG = (endG - startG) / step;
@@ -149,13 +154,13 @@ export function getGadientArray(startColor: string, endColor: string, step: numb
     //计算每一步的hex值
 
     let c =
-      'rgb(' +
+      "rgb(" +
       (sR * i + startR).toFixed(0) +
-      ',' +
+      "," +
       (sG * i + startG).toFixed(0) +
-      ',' +
+      "," +
       (sB * i + startB).toFixed(0) +
-      ')';
+      ")";
     // console.log('%c' + c, 'background:' + c);
 
     colorArr.push(c);
@@ -184,7 +189,5 @@ export function getLightColor(c: string, l: number = 0.4) {
  */
 export function getDarkColor(c: string, l: number = 0.8) {
   let color = getColor(c);
-  return `rgba(${(color.red * l).toFixed(0)},${(color.green * l).toFixed(0)},${(
-    color.blue * l
-  ).toFixed(0)},1)`;
+  return `rgba(${(color.red * l).toFixed(0)},${(color.green * l).toFixed(0)},${(color.blue * l).toFixed(0)},1)`;
 }
