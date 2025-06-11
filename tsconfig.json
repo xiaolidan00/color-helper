@@ -1,23 +1,27 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "jsx": "preserve",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "preserve",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+    "allowJs": false,
+    "checkJs": false,
+    "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true,
-    "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.js", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "references": []
+  "include": ["src/**/*.ts"]
 }

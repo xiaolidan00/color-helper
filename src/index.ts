@@ -1,13 +1,13 @@
 import colorname from "./colorname";
 
-const HEXLETTER = {
-  A: 10,
-  B: 11,
-  C: 12,
-  D: 13,
-  E: 14,
-  F: 15
-};
+// const HEXLETTER = {
+//   A: 10,
+//   B: 11,
+//   C: 12,
+//   D: 13,
+//   E: 14,
+//   F: 15
+// };
 const LETTERHEX = {
   10: "A",
   11: "B",
@@ -28,7 +28,7 @@ export function to16(value: number): string {
       return "0" + LETTERHEX[value as keyof typeof LETTERHEX];
     } else if (value >= 16) {
       let shi: number | string = parseInt((value / 16).toFixed(0));
-      let ge: number | string = value % 16;
+      const ge: number | string = value % 16;
 
       if (shi > 9 && shi < 16) {
         shi = LETTERHEX[shi as keyof typeof LETTERHEX];
@@ -66,9 +66,9 @@ export function parseHexColor(val: string): ColorResultType {
     alpha = get16(value.substring(7, 9)) / 255;
   }
   if (value.length == 6) {
-    let red = get16(value.substring(0, 2));
-    let green = get16(value.substring(2, 4));
-    let blue = get16(value.substring(4, 6));
+    const red = get16(value.substring(0, 2));
+    const green = get16(value.substring(2, 4));
+    const blue = get16(value.substring(4, 6));
     return {
       red,
       green,
@@ -143,17 +143,17 @@ export function getColor(color: string): ColorResultType {
 }
 
 export function getGadientArray(startColor: string, endColor: string, step: number): string[] {
-  let {red: startR, green: startG, blue: startB} = getColor(startColor);
-  let {red: endR, green: endG, blue: endB} = getColor(endColor);
+  const {red: startR, green: startG, blue: startB} = getColor(startColor);
+  const {red: endR, green: endG, blue: endB} = getColor(endColor);
 
-  let sR = (endR - startR) / step; //总差值
-  let sG = (endG - startG) / step;
-  let sB = (endB - startB) / step;
-  let colorArr = [];
+  const sR = (endR - startR) / step; //总差值
+  const sG = (endG - startG) / step;
+  const sB = (endB - startB) / step;
+  const colorArr: string[] = [];
   for (let i = 0; i < step; i++) {
     //计算每一步的hex值
 
-    let c =
+    const c =
       "rgb(" +
       (sR * i + startR).toFixed(0) +
       "," +
@@ -174,7 +174,7 @@ export function getGadientArray(startColor: string, endColor: string, step: numb
  * @returns {string} 浅颜色
  */
 export function getLightColor(c: string, l: number = 0.4) {
-  let color = getColor(c);
+  const color = getColor(c);
 
   return `rgba(${color.red + parseInt(((255 - color.red) * l).toFixed(0))},${
     color.green + parseInt(((255 - color.green) * l).toFixed(0))
@@ -188,6 +188,6 @@ export function getLightColor(c: string, l: number = 0.4) {
  * @returns {string} 暗颜色
  */
 export function getDarkColor(c: string, l: number = 0.8) {
-  let color = getColor(c);
+  const color = getColor(c);
   return `rgba(${(color.red * l).toFixed(0)},${(color.green * l).toFixed(0)},${(color.blue * l).toFixed(0)},1)`;
 }

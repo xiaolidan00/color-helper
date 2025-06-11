@@ -1,9 +1,23 @@
 {
   "name": "xcolor-helper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "颜色解析",
-  "main": "src/parseColor.ts",
+  "main": "src/index.ts",
   "type": "module",
+  "files": [
+    "dist",
+    "src",
+    "packges.json",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js"
+    },
+    "./*": "./dist/*"
+  },
   "scripts": {
     "build": "rollup --config"
   },
