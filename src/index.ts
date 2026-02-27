@@ -8,13 +8,13 @@ import colorname from "./colorname";
 //   E: 14,
 //   F: 15
 // };
-const LETTERHEX = {
-  10: "A",
-  11: "B",
-  12: "C",
-  14: "E",
-  15: "F"
-};
+// const LETTERHEX = {
+//   10: "A",
+//   11: "B",
+//   12: "C",
+//   14: "E",
+//   15: "F"
+// };
 //转化为10进制
 export function get16(value: string) {
   return parseInt(value, 16);
@@ -22,23 +22,24 @@ export function get16(value: string) {
 //转化为16位进制
 export function to16(value: number): string {
   if (value >= 0 && value <= 255) {
-    if (value <= 9) {
-      return "0" + value;
-    } else if (value > 9 && value < 16) {
-      return "0" + LETTERHEX[value as keyof typeof LETTERHEX];
-    } else if (value >= 16) {
-      let shi: number | string = parseInt((value / 16).toFixed(0));
-      const ge: number | string = value % 16;
+    return value.toString(16);
+    // if (value <= 9) {
+    //   return "0" + value;
+    // } else if (value > 9 && value < 16) {
+    //   return "0" + LETTERHEX[value as keyof typeof LETTERHEX];
+    // } else if (value >= 16) {
+    //   let shi: number | string = parseInt((value / 16).toFixed(0));
+    //   const ge: number | string = value % 16;
 
-      if (shi > 9 && shi < 16) {
-        shi = LETTERHEX[shi as keyof typeof LETTERHEX];
-      }
-      if (ge <= 9) {
-        return `${shi}${ge}`;
-      } else if (ge > 9 && ge < 16) {
-        return `${shi}${LETTERHEX[ge as keyof typeof LETTERHEX]}`;
-      }
-    }
+    //   if (shi > 9 && shi < 16) {
+    //     shi = LETTERHEX[shi as keyof typeof LETTERHEX];
+    //   }
+    //   if (ge <= 9) {
+    //     return `${shi}${ge}`;
+    //   } else if (ge > 9 && ge < 16) {
+    //     return `${shi}${LETTERHEX[ge as keyof typeof LETTERHEX]}`;
+    //   }
+    // }
   }
   return "00";
 }
