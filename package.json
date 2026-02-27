@@ -1,6 +1,6 @@
 {
   "name": "xcolor-helper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "颜色解析",
   "main": "src/index.ts",
   "type": "module",
@@ -19,7 +19,8 @@
     "./*": "./dist/*"
   },
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "dev": "node ./test/test.js"
   },
   "keywords": [
     "color",

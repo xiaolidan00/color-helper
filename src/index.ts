@@ -1,45 +1,20 @@
 import colorname from "./colorname";
 
-// const HEXLETTER = {
-//   A: 10,
-//   B: 11,
-//   C: 12,
-//   D: 13,
-//   E: 14,
-//   F: 15
-// };
-// const LETTERHEX = {
-//   10: "A",
-//   11: "B",
-//   12: "C",
-//   14: "E",
-//   15: "F"
-// };
-//转化为10进制
-export function get16(value: string) {
+/** * 转化为10进制
+ * @param {string} value - 十六进制字符
+ * @returns {number} 十进制数值*/
+export function get16(value: string): number {
   return parseInt(value, 16);
 }
-//转化为16位进制
+
+/** * 转化为16位进制
+ * @param {number} value - 十进制数值
+ * @returns {string} 十六进制字符*/
 export function to16(value: number): string {
   if (value >= 0 && value <= 255) {
-    return value.toString(16);
-    // if (value <= 9) {
-    //   return "0" + value;
-    // } else if (value > 9 && value < 16) {
-    //   return "0" + LETTERHEX[value as keyof typeof LETTERHEX];
-    // } else if (value >= 16) {
-    //   let shi: number | string = parseInt((value / 16).toFixed(0));
-    //   const ge: number | string = value % 16;
-
-    //   if (shi > 9 && shi < 16) {
-    //     shi = LETTERHEX[shi as keyof typeof LETTERHEX];
-    //   }
-    //   if (ge <= 9) {
-    //     return `${shi}${ge}`;
-    //   } else if (ge > 9 && ge < 16) {
-    //     return `${shi}${LETTERHEX[ge as keyof typeof LETTERHEX]}`;
-    //   }
-    // }
+    const s = value.toString(16);
+    if (s.length === 1) return "0" + s;
+    return s;
   }
   return "00";
 }
@@ -51,7 +26,10 @@ export interface ColorResultType {
   alpha: number;
   rgba: string;
 }
-//解析#XXXXXX颜色
+
+/** * 解析#XXXXXX颜色
+ * @param {string} val - #XXXXXX颜色
+ * @returns {ColorResultType} 颜色结果*/
 export function parseHexColor(val: string): ColorResultType {
   let color = val.toUpperCase();
   let value = "";
@@ -96,7 +74,9 @@ function trimStr(str: string) {
   return str;
 }
 
-//解析颜色
+/** * 解析颜色
+ * @param {string} color - 颜色字符串
+ * @returns {ColorResultType} 颜色结果*/
 export function getColor(color: string): ColorResultType {
   let red = 255,
     green = 255,
@@ -143,6 +123,11 @@ export function getColor(color: string): ColorResultType {
   };
 }
 
+/** * 获取渐变颜色数组
+ * @param {string} startColor - 开始颜色
+ * @param {string} endColor - 结束颜色
+ * @param {number} step - 多少个渐变颜色
+ * @returns {string[]} 颜色数组*/
 export function getGadientArray(startColor: string, endColor: string, step: number): string[] {
   const {red: startR, green: startG, blue: startB} = getColor(startColor);
   const {red: endR, green: endG, blue: endB} = getColor(endColor);
@@ -169,7 +154,7 @@ export function getGadientArray(startColor: string, endColor: string, step: numb
   return colorArr;
 }
 /**
- *
+ * 获取浅色
  * @param c {string}颜色
  * @param l {number}浅色度，范围0~1
  * @returns {string} 浅颜色
@@ -183,7 +168,7 @@ export function getLightColor(c: string, l: number = 0.4) {
 }
 
 /**
- *
+ * 获取深色
  * @param c {string}颜色
  * @param l {number}暗色度，范围0~1
  * @returns {string} 暗颜色
